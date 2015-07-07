@@ -37,6 +37,8 @@ class Contact
     
     def show(id)
       # TODO: Show a contact, based on ID
+      db = Database.new()
+      db.show_contact(id)
     end
     
   end

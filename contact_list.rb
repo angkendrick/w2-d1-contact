@@ -29,6 +29,19 @@ when "new"
   contact = Contact.create(name, email)
 when "list"
   Contact.all()
+when "show"
+  ok = false
+  id = 0
+  while !ok
+    puts "Enter employee number.."
+    #begin
+      id = Integer(STDIN.gets.chomp())
+      ok = true
+      Contact.show(id)
+    #rescue
+      #puts "Enter a valid integer"
+    #end
+  end
 
 end
 

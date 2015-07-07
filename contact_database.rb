@@ -22,13 +22,32 @@ class Database
   end
 
   def read_all_contacts()
+    count = 0
     csv_file = File.open("contacts.csv", "r")
       while !csv_file.eof?
         line = csv_file.readline #read each line
         array = line.split(%r{,\s*}) #store each line into array
         array.map! { |x| x.chomp } #remove newline char from each element
         puts "#{array[0]}: #{array[1]} (#{array[2]})"
+        count += 1
       end
+      puts "---"
+      puts "#{count} records total"
+  end
+
+  def show_contact(id)
+    array = []
+    csv_file = File.open("contacts.csv", "r")
+      while !csv_file.eof?
+        line = csv_file.readline #read each line
+        array << line.split(%r{,\s*}) #store each line into array
+      end
+      array.each do |x| #remove \n from multidimensional array
+        x.each do |y|
+          y.chomp!
+        end
+      end
+      p array
   end
 
 
