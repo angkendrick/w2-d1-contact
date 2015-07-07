@@ -20,14 +20,34 @@ class Database
       end
     end
     if ok_to_write
+      phone_numbers = add_phone_numbers() #get phone numbers here
       begin
         csv_writer = File.open("contacts.csv", "a") #write contact to csv file
-        csv_writer.puts "#{id}, #{contact_instance.name}, #{contact_instance.email}"
+        csv_writer.puts "#{id}, #{contact_instance.name}, #{contact_instance.email},#{phone_numbers}"
         csv_writer.close
         puts "Contact Saved! Contact ##{id}"
       rescue
         "Failed to write to contacts.csv"
       end
+    end
+  end
+
+  def add_phone_numbers() #add phone numbers and returns a string, currentyl used inside #write_contact
+    cont_adding = true
+    phone_numbers = ""
+    puts "Would you like to add a Phone number? (y/n)"
+    if STDIN.gets.chomp().downcase == 'y'
+      puts 'input using this format: "Mobile : XXX-XXX-XXXX" or "Home : XXX-XXX-XXXX"'
+      while cont_adding
+        puts "Enter phone number.."
+        number = STDIN.gets.chomp()
+        phone_numbers << " #{number} |"
+        puts "add more?"
+        if STDIN.gets.chomp().downcase == 'n'
+          cont_adding = false
+        end
+      end
+      return phone_numbers
     end
   end
 
