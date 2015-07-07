@@ -4,24 +4,34 @@ require 'csv'
 
 class Database
 
-  def get_index()  
+  def get_index() #provides index by counting existing number of lines in csv
     csv_file = File.open("contacts.csv", "r")
     csv_file.readlines.size + 1 #count number of lines and use as index
   end
 
-  def write_contact(contact_instance, id)
-
-    begin
-      csv_writer = File.open("contacts.csv", "a") #write contact to csv file
-      csv_writer.puts "#{id}, #{contact.name}, #{contact.email}"
-      csv_writer.close
-      puts "Contact Saved! Contact ##{id}"
+  def write_contact(contact_instance, id) #write a contact to the csv
+    ok_to_write = true
+    csv_file = File.open("contacts.csv", "r")
+    while !csv_file.eof?
+      line = csv_file.readline #read each line
+      if line.match("#{contact_instance.name}") && line.match("#{contact_instance.email}")
+        puts "Contact: #{contact_instance.name} already exists with the same email address: #{contact_instance.email}"
+        ok_to_write = false
+      end
+    end
+    if ok_to_write
+      begin
+        csv_writer = File.open("contacts.csv", "a") #write contact to csv file
+        csv_writer.puts "#{id}, #{contact_instance.name}, #{contact_instance.email}"
+        csv_writer.close
+        puts "Contact Saved! Contact ##{id}"
       rescue
         "Failed to write to contacts.csv"
       end
+    end
   end
 
-  def read_all_contacts()
+  def read_all_contacts() #display all contacts from the csv
     count = 0
     csv_file = File.open("contacts.csv", "r")
       while !csv_file.eof?
@@ -35,7 +45,7 @@ class Database
       puts "#{count} records total"
   end
 
-  def show_contact(id)
+  def show_contact(id) #find a specific contact using the ID #
     array = []
     not_found = false
     csv_file = File.open("contacts.csv", "r")
@@ -48,7 +58,7 @@ class Database
           y.chomp!
         end
       end
-      array.each do |x|
+      array.each do |x| #fully populated array.. search for ID on [0]
         if x[0].to_i == id
           puts "ID:     #{x[0]}"
           puts "Name:   #{x[1]}"
@@ -62,7 +72,7 @@ class Database
       if not_found then puts "Contact not found!" end
   end
 
-  def search_contact(term)
+  def search_contact(term) #search per line on csv using regex and display line per match
     csv_file = File.open("contacts.csv", "r")
     puts "search term: #{term}"
     while !csv_file.eof?
@@ -71,7 +81,6 @@ class Database
         puts line
       end
     end
-
   end
 
 end
