@@ -27,6 +27,8 @@ class Contact
  
     def find(term)
       # TODO: Will find and return contacts that contain the term in the first name, last name or email
+      db = Database.new()
+      db.search_contact(term)
     end
  
     def all

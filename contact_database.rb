@@ -50,7 +50,7 @@ class Database
       end
       array.each do |x|
         if x[0].to_i == id
-          puts "ID:      #{x[0]}"
+          puts "ID:     #{x[0]}"
           puts "Name:   #{x[1]}"
           puts "Email:  #{x[2]}"
           not_found = false
@@ -60,6 +60,18 @@ class Database
         end
       end
       if not_found then puts "Contact not found!" end
+  end
+
+  def search_contact(term)
+    csv_file = File.open("contacts.csv", "r")
+    puts "search term: #{term}"
+    while !csv_file.eof?
+      line = csv_file.readline #read each line
+      if line.match("#{term}")
+        puts line
+      end
+    end
+
   end
 
 end

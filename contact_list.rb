@@ -35,14 +35,16 @@ when "show"
   id = 0
   while !ok
     puts "Enter employee number.."
-    #begin
+    begin
       id = Integer(STDIN.gets.chomp())
       ok = true
       Contact.show(id)
-    #rescue
-      #puts "Enter a valid integer"
-    #end
+    rescue
+      puts "Enter a valid integer"
+    end
   end
+when "find"
+  Contact.find(user_search)
 
 end
 
