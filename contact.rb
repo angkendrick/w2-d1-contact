@@ -1,3 +1,5 @@
+require_relative 'contact_database'
+
 class Contact
  
   attr_accessor :name, :email
@@ -17,20 +19,10 @@ class Contact
   class << self
     def create(name, email)
       # TODO: Will initialize a contact as well as add it to the list of contacts
-      contact = Contact.new(name, email) #initialize contact
-
-      csv_file = File.open("contacts.csv", "r")
-      id = csv_file.readlines.size + 1 #count number of lines and use as index
-
-      begin
-      csv_writer = File.open("contacts.csv", "a") #write contact to csv file
-      csv_writer.puts "#{id}, #{contact.name}, #{contact.email}"
-      csv_writer.close
-      puts "Contact Saved! Contact ##{id}"
-      rescue
-        "Failed to write to contacts.csv"
-      end
-
+      @contact = Contact.new(name, email) #initialize contact
+      db = Database.new()
+      id = db.get_index() #count number of lines and use as index
+      db.write_contact(@contact, id) #write contact to csv file
     end
  
     def find(term)
@@ -39,14 +31,8 @@ class Contact
  
     def all
       # TODO: Return the list of contacts, as is
-      csv_file = File.open("contacts.csv", "r")
-      while !csv_file.eof?
-        line = csv_file.readline #read each line
-        array = line.split(%r{,\s*}) #store each line into array
-        array.map! { |x| x.chomp } #remove newline char from each element
-        puts "#{array[0]}: #{array[1]} (#{array[2]})"
-      end
-
+      db = Database.new()
+      db.read_all_contacts()
     end
     
     def show(id)
