@@ -7,6 +7,7 @@ require_relative 'contact_database'
 
 
 user_input = ARGV[0]
+user_search = ARGV[1]
 
 def help()
 

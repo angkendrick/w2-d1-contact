@@ -37,6 +37,7 @@ class Database
 
   def show_contact(id)
     array = []
+    not_found = false
     csv_file = File.open("contacts.csv", "r")
       while !csv_file.eof?
         line = csv_file.readline #read each line
@@ -47,8 +48,18 @@ class Database
           y.chomp!
         end
       end
-      p array
+      array.each do |x|
+        if x[0].to_i == id
+          puts "ID:      #{x[0]}"
+          puts "Name:   #{x[1]}"
+          puts "Email:  #{x[2]}"
+          not_found = false
+          break
+        else
+          not_found = true
+        end
+      end
+      if not_found then puts "Contact not found!" end
   end
-
 
 end
